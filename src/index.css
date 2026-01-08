@@ -44,16 +44,20 @@
     --dark-surface: 222 47% 6%;
     --glass-bg: 222 30% 8%;
 
-    /* Gradients */
+    /* Enhanced Gradients */
     --gradient-neon: linear-gradient(135deg, hsl(var(--neon-cyan)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--neon-pink)) 100%);
-    --gradient-glass: linear-gradient(135deg, hsla(222, 30%, 15%, 0.8) 0%, hsla(222, 30%, 8%, 0.6) 100%);
-    --gradient-card: linear-gradient(180deg, hsla(222, 30%, 12%, 0.9) 0%, hsla(222, 47%, 6%, 0.95) 100%);
+    --gradient-glass: linear-gradient(135deg, hsla(222, 30%, 18%, 0.4) 0%, hsla(222, 30%, 8%, 0.3) 100%);
+    --gradient-card: linear-gradient(180deg, hsla(222, 30%, 14%, 0.6) 0%, hsla(222, 47%, 6%, 0.7) 100%);
+    --gradient-surface: linear-gradient(180deg, hsla(222, 30%, 10%, 0.95) 0%, hsla(222, 47%, 5%, 0.98) 100%);
 
-    /* Shadows */
-    --shadow-neon-cyan: 0 0 20px hsla(185, 100%, 50%, 0.4), 0 0 40px hsla(185, 100%, 50%, 0.2);
-    --shadow-neon-purple: 0 0 20px hsla(270, 91%, 65%, 0.4), 0 0 40px hsla(270, 91%, 65%, 0.2);
-    --shadow-neon-pink: 0 0 20px hsla(328, 100%, 54%, 0.4);
-    --shadow-glass: 0 8px 32px hsla(0, 0%, 0%, 0.3);
+    /* Enhanced Shadows with Neon Tints */
+    --shadow-neon-cyan: 0 0 15px hsla(185, 100%, 50%, 0.25), 0 0 30px hsla(185, 100%, 50%, 0.15), 0 0 45px hsla(185, 100%, 50%, 0.05);
+    --shadow-neon-purple: 0 0 15px hsla(270, 91%, 65%, 0.25), 0 0 30px hsla(270, 91%, 65%, 0.15), 0 0 45px hsla(270, 91%, 65%, 0.05);
+    --shadow-neon-pink: 0 0 15px hsla(328, 100%, 54%, 0.25), 0 0 30px hsla(328, 100%, 54%, 0.1);
+    --shadow-glass: 0 8px 32px hsla(0, 0%, 0%, 0.4), inset 0 1px 0 hsla(0, 0%, 100%, 0.05);
+    --shadow-elevated: 0 20px 60px -15px hsla(0, 0%, 0%, 0.5), 0 10px 20px -10px hsla(185, 100%, 50%, 0.1);
+    --shadow-card: 0 4px 24px -4px hsla(0, 0%, 0%, 0.4), 0 0 0 1px hsla(0, 0%, 100%, 0.03);
+    --shadow-glow-soft: 0 0 40px hsla(185, 100%, 50%, 0.08);
 
     --sidebar-background: 222 47% 6%;
     --sidebar-foreground: 210 40% 98%;
@@ -78,20 +82,58 @@
 
   h1, h2, h3, h4, h5, h6, .font-gaming {
     font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.02em;
   }
 }
 
 @layer components {
+  /* Enhanced Glass Panel - Frosted with Inner Light */
   .glass-panel {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl;
-    box-shadow: var(--shadow-glass);
+    @apply relative rounded-2xl overflow-hidden;
+    background: linear-gradient(135deg, hsla(222, 30%, 14%, 0.5) 0%, hsla(222, 30%, 8%, 0.4) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsla(0, 0%, 100%, 0.06);
+    box-shadow: var(--shadow-card), inset 0 1px 0 hsla(0, 0%, 100%, 0.04);
   }
 
+  .glass-panel::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.04) 0%, transparent 50%);
+    border-radius: inherit;
+  }
+
+  /* Strong Glass Panel - More Prominent */
   .glass-panel-strong {
-    @apply bg-card/80 backdrop-blur-2xl border border-border/60 rounded-xl;
-    box-shadow: var(--shadow-glass);
+    @apply relative rounded-2xl overflow-hidden;
+    background: linear-gradient(135deg, hsla(222, 30%, 12%, 0.8) 0%, hsla(222, 30%, 6%, 0.85) 100%);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid hsla(0, 0%, 100%, 0.08);
+    box-shadow: var(--shadow-elevated), inset 0 1px 0 hsla(0, 0%, 100%, 0.06);
   }
 
+  .glass-panel-strong::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.06) 0%, transparent 40%);
+    border-radius: inherit;
+  }
+
+  /* Floating Card Effect */
+  .card-floating {
+    @apply glass-panel transition-all duration-500 ease-out;
+    transform: translateY(0) scale(1);
+  }
+
+  .card-floating:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-elevated), var(--shadow-glow-soft);
+    border-color: hsla(185, 100%, 50%, 0.15);
+  }
+
+  /* Neon Glows - Softer, More Controlled */
   .neon-glow-cyan {
     box-shadow: var(--shadow-neon-cyan);
   }
@@ -104,95 +146,180 @@
     box-shadow: var(--shadow-neon-pink);
   }
 
+  /* Text Gradient with Enhanced Visibility */
   .text-gradient-neon {
     background: var(--gradient-neon);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    filter: drop-shadow(0 0 8px hsla(185, 100%, 50%, 0.3));
   }
 
   .border-gradient-neon {
+    @apply relative rounded-2xl;
     border: 2px solid transparent;
     background: linear-gradient(var(--background), var(--background)) padding-box,
                 var(--gradient-neon) border-box;
+    box-shadow: 0 0 20px hsla(185, 100%, 50%, 0.1), 0 0 40px hsla(270, 91%, 65%, 0.05);
   }
 
+  /* Primary Button - Enhanced */
   .btn-neon-primary {
-    @apply relative overflow-hidden bg-primary text-primary-foreground font-semibold py-3 px-6 rounded-xl transition-all duration-300;
-    box-shadow: var(--shadow-neon-cyan);
+    @apply relative overflow-hidden font-semibold py-3.5 px-7 rounded-xl transition-all duration-300;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(185, 100%, 40%) 100%);
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-neon-cyan), inset 0 1px 0 hsla(0, 0%, 100%, 0.2);
+  }
+
+  .btn-neon-primary::before {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.2) 0%, transparent 50%);
   }
 
   .btn-neon-primary:hover {
-    @apply scale-105;
-    box-shadow: 0 0 30px hsla(185, 100%, 50%, 0.6), 0 0 60px hsla(185, 100%, 50%, 0.3);
+    @apply scale-[1.03];
+    box-shadow: 0 0 25px hsla(185, 100%, 50%, 0.5), 0 0 50px hsla(185, 100%, 50%, 0.25), 0 0 75px hsla(185, 100%, 50%, 0.1);
   }
 
   .btn-neon-secondary {
-    @apply relative overflow-hidden bg-secondary text-secondary-foreground font-semibold py-3 px-6 rounded-xl transition-all duration-300;
-    box-shadow: var(--shadow-neon-purple);
+    @apply relative overflow-hidden font-semibold py-3.5 px-7 rounded-xl transition-all duration-300;
+    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(270, 91%, 55%) 100%);
+    color: hsl(var(--secondary-foreground));
+    box-shadow: var(--shadow-neon-purple), inset 0 1px 0 hsla(0, 0%, 100%, 0.2);
   }
 
   .btn-neon-secondary:hover {
-    @apply scale-105;
-    box-shadow: 0 0 30px hsla(270, 91%, 65%, 0.6), 0 0 60px hsla(270, 91%, 65%, 0.3);
+    @apply scale-[1.03];
+    box-shadow: 0 0 25px hsla(270, 91%, 65%, 0.5), 0 0 50px hsla(270, 91%, 65%, 0.25);
   }
 
+  /* Stat Card - Enhanced with Glow on Hover */
+  .stat-card {
+    @apply glass-panel p-4 text-center transition-all duration-500 ease-out;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card), 0 0 30px hsla(185, 100%, 50%, 0.1);
+  }
+
+  /* Card Gaming - With Lift Effect */
   .card-gaming {
-    @apply glass-panel p-4 transition-all duration-300 hover:scale-[1.02];
+    @apply glass-panel p-4 transition-all duration-400 ease-out cursor-pointer;
   }
 
   .card-gaming:hover {
-    box-shadow: var(--shadow-glass), 0 0 20px hsla(185, 100%, 50%, 0.15);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: var(--shadow-elevated), 0 0 25px hsla(185, 100%, 50%, 0.12);
+    border-color: hsla(185, 100%, 50%, 0.2);
   }
 
-  .stat-card {
-    @apply glass-panel p-4 text-center transition-all duration-300;
-  }
-
+  /* Badges - Enhanced */
   .badge-offer {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+    @apply inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest;
     background: linear-gradient(135deg, hsl(var(--neon-pink)) 0%, hsl(var(--neon-purple)) 100%);
-    box-shadow: var(--shadow-neon-pink);
+    box-shadow: 0 0 20px hsla(328, 100%, 54%, 0.35), inset 0 1px 0 hsla(0, 0%, 100%, 0.2);
+    text-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.3);
   }
 
   .badge-available {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-primary/20 text-primary border border-primary/30;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider;
+    background: hsla(185, 100%, 50%, 0.12);
+    color: hsl(var(--primary));
+    border: 1px solid hsla(185, 100%, 50%, 0.25);
+    box-shadow: 0 0 12px hsla(185, 100%, 50%, 0.15);
   }
 
   .price-crossed {
-    @apply line-through text-muted-foreground text-sm;
+    @apply line-through text-muted-foreground text-sm opacity-60;
   }
 
+  /* Navigation - Enhanced Glassmorphic */
   .nav-item {
-    @apply flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200;
+    @apply flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all duration-300 ease-out;
   }
 
   .nav-item.active {
     @apply text-primary;
   }
 
-  .nav-item:hover {
-    @apply bg-muted/50;
+  .nav-item:hover:not(.active) {
+    background: hsla(185, 100%, 50%, 0.05);
+  }
+
+  /* Ambient Background */
+  .ambient-glow {
+    @apply fixed inset-0 pointer-events-none z-0 overflow-hidden;
+  }
+
+  .ambient-glow::before {
+    content: '';
+    @apply absolute w-[800px] h-[800px] rounded-full opacity-30;
+    top: -400px;
+    left: -200px;
+    background: radial-gradient(circle, hsla(270, 91%, 65%, 0.15) 0%, transparent 70%);
+    filter: blur(80px);
+  }
+
+  .ambient-glow::after {
+    content: '';
+    @apply absolute w-[600px] h-[600px] rounded-full opacity-25;
+    bottom: -200px;
+    right: -200px;
+    background: radial-gradient(circle, hsla(185, 100%, 50%, 0.12) 0%, transparent 70%);
+    filter: blur(80px);
+  }
+
+  /* Section Heading */
+  .section-heading {
+    @apply font-gaming text-sm font-semibold uppercase tracking-[0.15em] mb-5;
+    color: hsla(215, 20%, 65%, 0.8);
+  }
+
+  /* Icon Container */
+  .icon-container {
+    @apply flex items-center justify-center rounded-xl transition-all duration-300;
+    background: linear-gradient(135deg, hsla(185, 100%, 50%, 0.12) 0%, hsla(185, 100%, 50%, 0.05) 100%);
+    border: 1px solid hsla(185, 100%, 50%, 0.1);
+  }
+
+  .icon-container-secondary {
+    background: linear-gradient(135deg, hsla(270, 91%, 65%, 0.12) 0%, hsla(270, 91%, 65%, 0.05) 100%);
+    border: 1px solid hsla(270, 91%, 65%, 0.1);
+  }
+
+  .icon-container-accent {
+    background: linear-gradient(135deg, hsla(328, 100%, 54%, 0.12) 0%, hsla(328, 100%, 54%, 0.05) 100%);
+    border: 1px solid hsla(328, 100%, 54%, 0.1);
   }
 }
 
 @layer utilities {
   .animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
+    animation: pulse-glow 3s ease-in-out infinite;
   }
 
   .animate-float {
-    animation: float 3s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .animate-glow-border {
+    animation: glow-border 2s ease-in-out infinite;
   }
 
   @keyframes pulse-glow {
     0%, 100% {
-      opacity: 1;
-      filter: brightness(1);
+      opacity: 0.5;
+      transform: scale(1);
     }
     50% {
       opacity: 0.8;
-      filter: brightness(1.2);
+      transform: scale(1.05);
     }
   }
 
@@ -201,7 +328,48 @@
       transform: translateY(0px);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(-8px);
     }
+  }
+
+  @keyframes shimmer {
+    0% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes glow-border {
+    0%, 100% {
+      border-color: hsla(185, 100%, 50%, 0.2);
+      box-shadow: 0 0 15px hsla(185, 100%, 50%, 0.1);
+    }
+    50% {
+      border-color: hsla(185, 100%, 50%, 0.4);
+      box-shadow: 0 0 25px hsla(185, 100%, 50%, 0.2);
+    }
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsla(222, 30%, 8%, 0.5);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsla(185, 100%, 50%, 0.3);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsla(185, 100%, 50%, 0.5);
   }
 }
