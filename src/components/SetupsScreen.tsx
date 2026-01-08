@@ -11,6 +11,7 @@ const setups = [
     available: 8,
     total: 12,
     color: "from-neon-cyan to-neon-blue",
+    glowColor: "hsla(185, 100%, 50%, 0.15)",
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const setups = [
     available: 3,
     total: 4,
     color: "from-neon-purple to-secondary",
+    glowColor: "hsla(270, 91%, 65%, 0.15)",
   },
   {
     id: 3,
@@ -31,6 +33,7 @@ const setups = [
     available: 2,
     total: 2,
     color: "from-green-500 to-emerald-600",
+    glowColor: "hsla(142, 76%, 36%, 0.15)",
   },
   {
     id: 4,
@@ -41,21 +44,22 @@ const setups = [
     available: 2,
     total: 3,
     color: "from-neon-pink to-accent",
+    glowColor: "hsla(328, 100%, 54%, 0.15)",
   },
 ];
 
 const SetupsScreen = () => {
   return (
-    <div className="min-h-screen pb-24 px-4 pt-6">
+    <div className="min-h-screen pb-28 px-4 pt-6">
       {/* Header */}
       <motion.div
-        className="mb-6"
+        className="mb-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="font-gaming text-xl font-bold mb-2">Gaming Setups</h1>
-        <p className="text-muted-foreground text-sm">Premium equipment for the ultimate experience</p>
+        <h1 className="font-gaming text-2xl font-black mb-2 tracking-tight">Gaming Setups</h1>
+        <p className="text-muted-foreground text-sm tracking-wide">Premium equipment for the ultimate experience</p>
       </motion.div>
 
       {/* Setups Grid */}
@@ -63,19 +67,28 @@ const SetupsScreen = () => {
         {setups.map((setup, index) => (
           <motion.div
             key={setup.id}
-            className="glass-panel overflow-hidden"
+            className="glass-panel overflow-hidden group"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
+            whileHover={{ y: -3 }}
           >
-            {/* Gradient Header */}
-            <div className={`h-2 bg-gradient-to-r ${setup.color}`} />
+            {/* Gradient Header with glow */}
+            <div className={`h-1.5 bg-gradient-to-r ${setup.color} relative`}>
+              <div className={`absolute inset-0 bg-gradient-to-r ${setup.color} blur-sm opacity-70`} />
+            </div>
             
-            <div className="p-4">
-              <div className="flex items-start gap-4">
+            <div className="p-5 relative">
+              {/* Hover glow effect */}
+              <div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: `radial-gradient(circle at top left, ${setup.glowColor} 0%, transparent 50%)` }}
+              />
+              
+              <div className="flex items-start gap-4 relative z-10">
                 {/* Icon */}
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${setup.color} p-[1px] flex-shrink-0`}>
-                  <div className="w-full h-full rounded-xl bg-card flex items-center justify-center">
+                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${setup.color} p-[1.5px] flex-shrink-0 transition-transform duration-300 group-hover:scale-105`}>
+                  <div className="w-full h-full rounded-[10px] bg-card/90 backdrop-blur-sm flex items-center justify-center">
                     <setup.icon className="w-7 h-7 text-foreground" />
                   </div>
                 </div>
@@ -83,19 +96,23 @@ const SetupsScreen = () => {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-gaming text-base font-bold">{setup.title}</h3>
+                    <h3 className="font-gaming text-base font-bold tracking-tight">{setup.title}</h3>
                     <span className="badge-available flex-shrink-0">
                       {setup.available}/{setup.total}
                     </span>
                   </div>
-                  <p className="text-muted-foreground text-sm mb-3">{setup.description}</p>
+                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{setup.description}</p>
                   
                   {/* Specs */}
                   <div className="flex flex-wrap gap-2">
                     {setup.specs.map((spec, i) => (
                       <span 
                         key={i} 
-                        className="inline-flex items-center gap-1 px-2 py-1 bg-muted/50 rounded-md text-xs"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium"
+                        style={{
+                          background: 'hsla(222, 30%, 15%, 0.6)',
+                          border: '1px solid hsla(0, 0%, 100%, 0.05)',
+                        }}
                       >
                         <Cpu className="w-3 h-3 text-primary" />
                         {spec}
@@ -109,15 +126,17 @@ const SetupsScreen = () => {
         ))}
       </div>
 
-      {/* Info Note */}
+      {/* Info Note - Enhanced */}
       <motion.div
-        className="mt-6 glass-panel p-4 flex items-start gap-3"
+        className="mt-8 glass-panel p-5 flex items-start gap-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.5 }}
       >
-        <Zap className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-        <p className="text-muted-foreground text-sm">
+        <div className="icon-container w-10 h-10 flex-shrink-0">
+          <Zap className="w-5 h-5 text-primary" />
+        </div>
+        <p className="text-muted-foreground text-sm leading-relaxed">
           All setups include high-speed internet, gaming peripherals, and comfortable seating. 
           Walk-in or book your slot in advance!
         </p>
