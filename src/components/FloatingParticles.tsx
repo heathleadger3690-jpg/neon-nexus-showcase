@@ -30,8 +30,19 @@ interface Sparkle {
   color: string;
 }
 
+interface Comet {
+  id: number;
+  startX: number;
+  startY: number;
+  angle: number;
+  length: number;
+  speed: number;
+  color: string;
+}
+
 const FloatingParticles = () => {
   const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+  const [comets, setComets] = useState<Comet[]>([]);
 
   const particles = useMemo<Particle[]>(() => {
     const colors = [
@@ -107,6 +118,45 @@ const FloatingParticles = () => {
         createSparkle();
       }
     }, 800);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Comet generator
+  useEffect(() => {
+    const cometColors = [
+      "hsla(185, 100%, 70%, 1)",
+      "hsla(270, 91%, 80%, 1)",
+      "hsla(0, 0%, 100%, 1)",
+      "hsla(45, 100%, 75%, 1)",
+    ];
+
+    const createComet = () => {
+      const fromLeft = Math.random() > 0.5;
+      const newComet: Comet = {
+        id: Date.now() + Math.random(),
+        startX: fromLeft ? -5 : 105,
+        startY: Math.random() * 40,
+        angle: fromLeft ? 25 + Math.random() * 20 : 155 - Math.random() * 20,
+        length: Math.random() * 60 + 80,
+        speed: Math.random() * 0.8 + 1.2,
+        color: cometColors[Math.floor(Math.random() * cometColors.length)],
+      };
+      
+      setComets(prev => [...prev, newComet]);
+      
+      // Remove comet after animation
+      setTimeout(() => {
+        setComets(prev => prev.filter(c => c.id !== newComet.id));
+      }, 2000);
+    };
+
+    // Create comets occasionally
+    const interval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        createComet();
+      }
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -228,6 +278,72 @@ const FloatingParticles = () => {
             </svg>
           </motion.div>
         ))}
+      </AnimatePresence>
+
+      {/* Comet trails */}
+      <AnimatePresence>
+        {comets.map((comet) => {
+          const angleRad = (comet.angle * Math.PI) / 180;
+          const endX = comet.startX + Math.cos(angleRad) * 150;
+          const endY = comet.startY + Math.sin(angleRad) * 150;
+          
+          return (
+            <motion.div
+              key={comet.id}
+              className="absolute"
+              style={{
+                left: `${comet.startX}%`,
+                top: `${comet.startY}%`,
+                transform: `rotate(${comet.angle}deg)`,
+                transformOrigin: "left center",
+              }}
+              initial={{ opacity: 0, x: 0 }}
+              animate={{ 
+                opacity: [0, 1, 1, 0],
+                x: ["0%", "150%"],
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ 
+                duration: comet.speed,
+                ease: "easeOut",
+              }}
+            >
+              {/* Comet head */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: 6,
+                  height: 6,
+                  background: comet.color,
+                  boxShadow: `0 0 10px ${comet.color}, 0 0 20px ${comet.color}, 0 0 30px ${comet.color}`,
+                  right: 0,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                }}
+              />
+              {/* Comet tail */}
+              <div
+                style={{
+                  width: comet.length,
+                  height: 2,
+                  background: `linear-gradient(90deg, transparent 0%, ${comet.color.replace("1)", "0.3)")} 30%, ${comet.color.replace("1)", "0.8)")} 100%)`,
+                  filter: "blur(1px)",
+                  borderRadius: "0 2px 2px 0",
+                }}
+              />
+              {/* Secondary tail glow */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2"
+                style={{
+                  width: comet.length * 0.7,
+                  height: 6,
+                  background: `linear-gradient(90deg, transparent 0%, ${comet.color.replace("1)", "0.15)")} 100%)`,
+                  filter: "blur(3px)",
+                }}
+              />
+            </motion.div>
+          );
+        })}
       </AnimatePresence>
     </div>
   );
