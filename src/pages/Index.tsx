@@ -7,6 +7,7 @@ import SetupsScreen from "@/components/SetupsScreen";
 import PricingScreen from "@/components/PricingScreen";
 import TournamentsScreen from "@/components/TournamentsScreen";
 import AboutScreen from "@/components/AboutScreen";
+import FloatingParticles from "@/components/FloatingParticles";
 
 type TabType = "home" | "setups" | "pricing" | "tournaments" | "about";
 
@@ -39,6 +40,9 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-x-hidden relative">
       {/* Ambient Background Glows */}
       <div className="ambient-glow" />
+      
+      {/* Floating Particles */}
+      <FloatingParticles />
       
       {/* Subtle Grid Overlay */}
       <div 
