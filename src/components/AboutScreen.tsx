@@ -3,6 +3,7 @@ import {
   Cpu, Wifi, Armchair, Shield, Users, Gamepad2, 
   MapPin, Phone, Mail, Instagram, Twitter, MessageCircle
 } from "lucide-react";
+import aboutBg from "@/assets/about-bg.jpg";
 
 const features = [
   { icon: Cpu, title: "Ultra High-End PCs", desc: "RTX 4070/4080, i7/i9 processors" },
@@ -21,7 +22,21 @@ const socialLinks = [
 
 const AboutScreen = () => {
   return (
-    <div className="min-h-screen pb-28 px-4 pt-6">
+    <div className="min-h-screen pb-28 relative">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={aboutBg} 
+          alt="" 
+          className="w-full h-full object-cover"
+        />
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/92 via-background/85 to-background" />
+        {/* Cinematic vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,hsl(var(--background))_100%)] opacity-50" />
+      </div>
+      
+      <div className="relative z-10 px-4 pt-6">
       {/* Header */}
       <motion.div
         className="mb-8"
@@ -209,6 +224,7 @@ const AboutScreen = () => {
           <span className="text-muted-foreground text-xs tracking-wide">Demo App – For Presentation Only</span>
         </div>
       </motion.div>
+      </div>
     </div>
   );
 };

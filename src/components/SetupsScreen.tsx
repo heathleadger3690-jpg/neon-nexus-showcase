@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Monitor, Gamepad2, Glasses, Cpu, Zap } from "lucide-react";
+import setupsBg from "@/assets/setups-bg.jpg";
 
 const setups = [
   {
@@ -50,7 +51,21 @@ const setups = [
 
 const SetupsScreen = () => {
   return (
-    <div className="min-h-screen pb-28 px-4 pt-6">
+    <div className="min-h-screen pb-28 relative">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={setupsBg} 
+          alt="" 
+          className="w-full h-full object-cover"
+        />
+        {/* Dark overlay with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background" />
+        {/* Soft blur overlay for depth */}
+        <div className="absolute inset-0 backdrop-blur-[2px]" />
+      </div>
+      
+      <div className="relative z-10 px-4 pt-6">
       {/* Header */}
       <motion.div
         className="mb-8"
@@ -141,6 +156,7 @@ const SetupsScreen = () => {
           Walk-in or book your slot in advance!
         </p>
       </motion.div>
+      </div>
     </div>
   );
 };
