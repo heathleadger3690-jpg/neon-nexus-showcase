@@ -2,6 +2,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Monitor, Gamepad, Sparkles, MapPin, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
+import cafeInterior from "@/assets/cafe-interior.jpg";
 
 const stats = [
   { icon: Monitor, value: 12, label: "PCs Available", color: "text-primary", glowColor: "hsla(185, 100%, 50%, 0.2)" },
@@ -171,21 +172,31 @@ const HomeScreen = () => {
         <h3 className="section-heading">Quick Actions</h3>
         
         <motion.button
-          className="w-full glass-panel p-5 flex items-center justify-between group"
+          className="w-full glass-panel p-0 overflow-hidden flex items-stretch group"
           onClick={handleViewLocation}
           whileHover={{ scale: 1.01, y: -2 }}
           whileTap={{ scale: 0.99 }}
         >
-          <div className="flex items-center gap-4">
-            <div className="icon-container w-14 h-14 group-hover:border-primary/30 transition-all duration-300">
-              <MapPin className="w-6 h-6 text-primary transition-transform duration-300 group-hover:scale-110" />
+          {/* Cafe Interior Image */}
+          <div className="relative w-24 h-20 flex-shrink-0 overflow-hidden">
+            <img 
+              src={cafeInterior} 
+              alt="Gaming Cafe" 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card" />
+          </div>
+          
+          <div className="flex items-center gap-4 p-4 flex-1">
+            <div className="icon-container w-12 h-12 group-hover:border-primary/30 transition-all duration-300">
+              <MapPin className="w-5 h-5 text-primary transition-transform duration-300 group-hover:scale-110" />
             </div>
             <div className="text-left">
               <p className="font-semibold text-base tracking-tight">View Cafe Location</p>
               <p className="text-muted-foreground text-sm mt-0.5">Bangalore, Karnataka</p>
             </div>
+            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 ml-auto" />
           </div>
-          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
         </motion.button>
       </motion.div>
 
