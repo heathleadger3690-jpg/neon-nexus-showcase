@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Monitor, Gamepad, Sparkles, MapPin, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const stats = [
   { icon: Monitor, value: 12, label: "PCs Available", color: "text-primary", glowColor: "hsla(185, 100%, 50%, 0.2)" },
@@ -44,7 +45,21 @@ const HomeScreen = () => {
   };
 
   return (
-    <div className="min-h-screen pb-28 px-4 pt-6">
+    <div className="min-h-screen pb-28 relative">
+      {/* Hero Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={heroBg} 
+          alt="" 
+          className="w-full h-full object-cover"
+        />
+        {/* Dark gradient overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background" />
+        {/* Additional cinematic vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(var(--background))_100%)] opacity-60" />
+      </div>
+      
+      <div className="relative z-10 px-4 pt-6">
       {/* Header */}
       <motion.div
         className="mb-10"
@@ -203,6 +218,7 @@ const HomeScreen = () => {
           ))}
         </div>
       </motion.div>
+      </div>
     </div>
   );
 };
