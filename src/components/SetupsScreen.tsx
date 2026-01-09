@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 import { Monitor, Gamepad2, Glasses, Cpu, Zap } from "lucide-react";
 import setupsBg from "@/assets/setups-bg.jpg";
+import pcSetup from "@/assets/pc-setup.jpg";
+import ps5Setup from "@/assets/ps5-setup.jpg";
+import xboxSetup from "@/assets/xbox-setup.jpg";
+import vrSetup from "@/assets/vr-setup.jpg";
 
 const setups = [
   {
@@ -8,6 +12,7 @@ const setups = [
     title: "High-End Gaming PCs",
     description: "RTX 4070/4080 GPUs, Intel i7/i9, 240Hz monitors, mechanical keyboards",
     icon: Monitor,
+    image: pcSetup,
     specs: ["NVIDIA RTX 4080", "32GB DDR5 RAM", "240Hz Display"],
     available: 8,
     total: 12,
@@ -19,6 +24,7 @@ const setups = [
     title: "PlayStation 5 Zone",
     description: "Latest PS5 consoles with 4K HDR displays and premium sound",
     icon: Gamepad2,
+    image: ps5Setup,
     specs: ["PS5 Console", "4K HDR TV", "DualSense Controller"],
     available: 3,
     total: 4,
@@ -30,6 +36,7 @@ const setups = [
     title: "Xbox Series X Arena",
     description: "Xbox Game Pass Ultimate with hundreds of games ready to play",
     icon: Gamepad2,
+    image: xboxSetup,
     specs: ["Xbox Series X", "Game Pass Ultimate", "Elite Controller"],
     available: 2,
     total: 2,
@@ -41,6 +48,7 @@ const setups = [
     title: "VR Gaming Zone",
     description: "Meta Quest 3 and PSVR2 for immersive virtual reality experiences",
     icon: Glasses,
+    image: vrSetup,
     specs: ["Meta Quest 3", "PSVR2", "Full Body Tracking"],
     available: 2,
     total: 3,
@@ -88,9 +96,21 @@ const SetupsScreen = () => {
             transition={{ duration: 0.4, delay: index * 0.1 }}
             whileHover={{ y: -3 }}
           >
-            {/* Gradient Header with glow */}
-            <div className={`h-1.5 bg-gradient-to-r ${setup.color} relative`}>
-              <div className={`absolute inset-0 bg-gradient-to-r ${setup.color} blur-sm opacity-70`} />
+            {/* Setup Image */}
+            <div className="relative h-32 overflow-hidden">
+              <img 
+                src={setup.image} 
+                alt={setup.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
+              {/* Colored accent glow */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${setup.color} opacity-20 mix-blend-overlay`} />
+              {/* Availability badge */}
+              <span className="badge-available absolute top-3 right-3">
+                {setup.available}/{setup.total}
+              </span>
             </div>
             
             <div className="p-5 relative">
@@ -102,21 +122,16 @@ const SetupsScreen = () => {
               
               <div className="flex items-start gap-4 relative z-10">
                 {/* Icon */}
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${setup.color} p-[1.5px] flex-shrink-0 transition-transform duration-300 group-hover:scale-105`}>
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${setup.color} p-[1.5px] flex-shrink-0 transition-transform duration-300 group-hover:scale-105`}>
                   <div className="w-full h-full rounded-[10px] bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                    <setup.icon className="w-7 h-7 text-foreground" />
+                    <setup.icon className="w-6 h-6 text-foreground" />
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-gaming text-base font-bold tracking-tight">{setup.title}</h3>
-                    <span className="badge-available flex-shrink-0">
-                      {setup.available}/{setup.total}
-                    </span>
-                  </div>
-                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{setup.description}</p>
+                  <h3 className="font-gaming text-base font-bold tracking-tight mb-1">{setup.title}</h3>
+                  <p className="text-muted-foreground text-sm mb-3 leading-relaxed">{setup.description}</p>
                   
                   {/* Specs */}
                   <div className="flex flex-wrap gap-2">
